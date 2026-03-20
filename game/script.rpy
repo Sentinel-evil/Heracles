@@ -41,10 +41,9 @@ screen tictactoe_game():
                         else:
                             action Function(ttt_game.player_move, i)
 
-                        # Display X, O, or nothing
+                        
                         text (ttt_game.board[i] or "") size 50 align (0.5, 0.5) color "#FFF"
 
-            # Close / Reset Buttons
             hbox:
                 xalign 0.5
                 spacing 20
@@ -53,6 +52,61 @@ screen tictactoe_game():
                     
                 textbutton "Quit":
                     action Return()
+
+screen wasd_grid():
+    modal True
+    add "#1a1a1a" 
+
+   
+    key "w" action Function(walker.move, "w")
+    key "s" action Function(walker.move, "s")
+    key "a" action Function(walker.move, "a")
+    key "d" action Function(walker.move, "d")
+    
+    
+    key "K_UP" action Function(walker.move, "w")
+    key "K_DOWN" action Function(walker.move, "s")
+    key "K_LEFT" action Function(walker.move, "a")
+    key "K_RIGHT" action Function(walker.move, "d")
+
+    
+    frame:
+        align (0.5, 0.5)
+        padding (10, 10)
+        background "#000000"
+        
+        grid 9 9:
+            spacing 4
+            
+            for i in range(81):
+                frame:
+                    
+                    xysize (120, 120)
+                    background "#333"
+                    padding (0, 0)
+
+                    
+                    if i == walker.player_idx:
+                        add "her_game.png":
+                            fit "contain"    
+                            align (0.5, 0.5) 
+                            zoom 1.1         
+                    else:
+                        null 
+
+
+    vbox:
+        align (0.05, 0.05)
+        text "Use W, A, S, D to Move" size 30 color "#AAA"
+        
+    textbutton "EXIT":
+        align (0.95, 0.05)
+        text_size 40
+        text_idle_color "#F00"
+        action Return()
+
+
+
 # Игра начинается здесь:
 screen think():
     text "Ещё Вчера Геракл закончил исполнять свой последний подвиг…":
@@ -69,7 +123,10 @@ label start:
     "Голос" "Ещё вчера Геракл закончил исполнять свой последний подвиг…"
     "Голос" "И вот, отдохнув один день, он вернулся во дворец Эврисфея"
     pause .5
+    "DEVS TEAM" "the next screen is test only and does not effect game play. It is created to reeplace the tic tac toe later"
 
+    $ walker = GridWalker()
+    call screen wasd_grid
     scene трон
     show her_based
     show eur_base
