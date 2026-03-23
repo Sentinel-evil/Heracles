@@ -1698,19 +1698,35 @@ screen wasd_grid():
                             fit "contain"    
                             align (0.5, 0.5) 
                             zoom 1.1         
+                    elif i==walker.npc_idx:
+                        add "cerberus.png" fit "contain" align (0.5, 0.5)
                     else:
-                        null 
+                        null
 
 
     vbox:
         align (0.05, 0.05)
         text "Use W, A, S, D to Move" size 30 color "#AAA"
         
-    textbutton "EXIT":
+    
+    textbutton "I WIN BUTTON":
         align (0.95, 0.05)
         text_size 40
         text_idle_color "#F00"
         action Return()
+        
+    vbox:
+        align (0.05, 0.95)
+        spacing 10
+        text "HP: [walker.hp]/[walker.max_hp]" size 40 color "#F00"
+        
+        # A simple visual health bar
+        bar value walker.hp range walker.max_hp xsize 300
+        
+        text "NPC_HP: [walker.npc_hp]/[walker.npc_max_hp]" size 40 color "#F00"
+        
+        # A simple visual health bar
+        bar value walker.npc_hp range walker.npc_max_hp xsize 300
 
 
 

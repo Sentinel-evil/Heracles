@@ -45,21 +45,27 @@ label choise1_forward:
         Cer2 "РРРРР, Гав" 
         Cer3 "Делу время...."
         label smth0:
-        $ ttt_game = TicTacToe()
-        call screen tictactoe_game
+        $ walker = GridWalker()
+        call screen wasd_grid
+        jump smth
+        #$ ttt_game = TicTacToe()
+        #call screen tictactoe_game
         
         
-        if ttt_game.winner == "X":
-                jump smth
-        elif ttt_game.winner == "O":
+        #if ttt_game.winner == "X":
+        #        jump smth
+        #elif ttt_game.winner == "O":
+                
+        #        jump smth1
+        #else:
+        #        He "Ничья?"
+        #        He "переиграем..."
+        
+        #        jump smth1
+        label smth1:
                 "Голос" "Так он проиграл Церберу..."
                 "Голос" "И так он лежал ещё два часа..."
                 jump smth0
-        else:
-                He "Ничья?"
-                He "переиграем..."
-                jump smth0
-
         label smth:
             
         "Голос" "Так Геракл победил Цербера и отправился дальше"
