@@ -23,7 +23,6 @@ define Cer3 = Character('Третья Голова')
 
 # Игра начинается здесь:
 
-
 label start:
     scene black
     scene black

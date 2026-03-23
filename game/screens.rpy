@@ -326,6 +326,8 @@ screen navigation():
             ## Помощь не необходима и не относится к мобильным устройствам.
             textbutton _("Помощь") action ShowMenu("help")
 
+        if main_menu:
+            textbutton _("Предистория") action Start("movie")
         if renpy.variant("pc"):
 
             ## Кнопка выхода блокирована в iOS и не нужна на Android и в веб-
