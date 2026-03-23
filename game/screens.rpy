@@ -328,6 +328,8 @@ screen navigation():
 
         if main_menu:
             textbutton _("Предистория") action Start("movie")
+        if main_menu:
+            textbutton _("PVP") action Start("pvp")
         if renpy.variant("pc"):
 
             ## Кнопка выхода блокирована в iOS и не нужна на Android и в веб-
@@ -1736,3 +1738,70 @@ screen think():
 screen think2():
     text "И вот, отдохнув один день, он вернулся во дворец Эврисфея":
         align (0.5,0.5)
+screen pvp_wasd_grid():
+    modal True
+    add "#1a1a1a" 
+
+   
+    key "w" action Function(walker.move, "w")
+    key "s" action Function(walker.move, "s")
+    key "a" action Function(walker.move, "a")
+    key "d" action Function(walker.move, "d")
+    
+    
+    
+
+    key "i" action Function(walker.move_npc, "i")
+    key "k" action Function(walker.move_npc, "k")
+    key "j" action Function(walker.move_npc, "j")
+    key "l" action Function(walker.move_npc, "l")
+    frame:
+        align (0.5, 0.5)
+        padding (10, 10)
+        background "#000000"
+        
+        grid 9 9:
+            spacing 4
+            
+            for i in range(81):
+                frame:
+                    
+                    xysize (120, 120)
+                    background "#333"
+                    padding (0, 0)
+
+                    
+                    if i == walker.player_idx:
+                        add "her_game.png":
+                            fit "contain"    
+                            align (0.5, 0.5) 
+                            zoom 1.1         
+                    elif i==walker.npc_idx:
+                        add "cerberus.png" fit "contain" align (0.5, 0.5)
+                    else:
+                        null
+
+
+    vbox:
+        align (0.05, 0.05)
+        text "Use W, A, S, D to Move" size 30 color "#AAA"
+        
+    
+    textbutton "I WIN BUTTON":
+        align (0.95, 0.05)
+        text_size 40
+        text_idle_color "#F00"
+        action Return()
+        
+    vbox:
+        align (0.05, 0.95)
+        spacing 10
+        text "HP: [walker.hp]/[walker.max_hp]" size 40 color "#F00"
+        
+        # A simple visual health bar
+        bar value walker.hp range walker.max_hp xsize 300
+        
+        text "NPC_HP: [walker.npc_hp]/[walker.npc_max_hp]" size 40 color "#F00"
+        
+        # A simple visual health bar
+        bar value walker.npc_hp range walker.npc_max_hp xsize 300

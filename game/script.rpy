@@ -30,10 +30,9 @@ label start:
     "Голос" "Ещё вчера Геракл закончил исполнять свой последний подвиг…"
     "Голос" "И вот, отдохнув один день, он вернулся во дворец Эврисфея"
     pause .5
-    "DEVS TEAM" "the next screen is test only and does not effect game play. It is created to reeplace the tic tac toe later"
+    
 
-    $ walker = GridWalker()
-    call screen wasd_grid
+    
     scene трон
     show her_based
     show eur_base
