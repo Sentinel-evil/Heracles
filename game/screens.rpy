@@ -1618,3 +1618,103 @@ style slider_vbox:
 style slider_slider:
     variant "small"
     xsize 1200
+
+# my screens
+screen tictactoe_game():
+    modal True 
+    add "#00000080" 
+    frame:
+        align (0.5, 0.5)
+        padding (20, 20)
+        vbox:
+            spacing 20
+            
+           
+            text "[ttt_game.message]" size 30 xalign 0.5
+
+           
+            grid 3 3:
+                spacing 10
+                for i in range(9):
+                    button:
+                        xysize (100, 100)
+                        background "#444"
+                        
+                        
+                        if ttt_game.board[i] is not None or ttt_game.winner is not None:
+                            action NullAction()
+                        else:
+                            action Function(ttt_game.player_move, i)
+
+                        
+                        text (ttt_game.board[i] or "") size 50 align (0.5, 0.5) color "#FFF"
+
+            hbox:
+                xalign 0.5
+                spacing 20
+                
+               
+                    
+                textbutton "Quit":
+                    action Return()
+
+screen wasd_grid():
+    modal True
+    add "#1a1a1a" 
+
+   
+    key "w" action Function(walker.move, "w")
+    key "s" action Function(walker.move, "s")
+    key "a" action Function(walker.move, "a")
+    key "d" action Function(walker.move, "d")
+    
+    
+    key "K_UP" action Function(walker.move, "w")
+    key "K_DOWN" action Function(walker.move, "s")
+    key "K_LEFT" action Function(walker.move, "a")
+    key "K_RIGHT" action Function(walker.move, "d")
+
+    
+    frame:
+        align (0.5, 0.5)
+        padding (10, 10)
+        background "#000000"
+        
+        grid 9 9:
+            spacing 4
+            
+            for i in range(81):
+                frame:
+                    
+                    xysize (120, 120)
+                    background "#333"
+                    padding (0, 0)
+
+                    
+                    if i == walker.player_idx:
+                        add "her_game.png":
+                            fit "contain"    
+                            align (0.5, 0.5) 
+                            zoom 1.1         
+                    else:
+                        null 
+
+
+    vbox:
+        align (0.05, 0.05)
+        text "Use W, A, S, D to Move" size 30 color "#AAA"
+        
+    textbutton "EXIT":
+        align (0.95, 0.05)
+        text_size 40
+        text_idle_color "#F00"
+        action Return()
+
+
+
+screen think():
+    text "Ещё Вчера Геракл закончил исполнять свой последний подвиг…":
+        align (0.5,0.5)
+screen think2():
+    text "И вот, отдохнув один день, он вернулся во дворец Эврисфея":
+        align (0.5,0.5)

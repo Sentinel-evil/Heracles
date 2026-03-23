@@ -1,0 +1,17 @@
+label choise3_forward:
+            with Dissolve(.5)
+            scene трон
+            show her_happy
+            show cerberus_h
+            show eur_sad
+            He "Держи свою СОБАЧКУ!1!"
+            "Голос" "Однако Цербер выглядел очень..."
+            "Голос" "ОЧЕНЬ ГОЛОДНЫМ"
+            hide eur_sad
+            show eur_scream
+            Eur "ААААААААААААААААААААААААААААААА"
+            # Тут типо звуки криков вставьте
+            with Dissolve(.5)
+            scene black
+            "Голос" "Так он кричал ещё два часа..."
+            return
