@@ -1671,8 +1671,9 @@ screen wasd_grid():
     key "s" action Function(walker.move, "s")
     key "a" action Function(walker.move, "a")
     key "d" action Function(walker.move, "d")
-    
-    
+    key "K_SPACE" action Function(walker.space_attack)
+    key "e" action Function(walker.dog_attack)
+    key "q" action Function(walker.dog_attack1)
     key "K_UP" action Function(walker.move, "w")
     key "K_DOWN" action Function(walker.move, "s")
     key "K_LEFT" action Function(walker.move, "a")
@@ -1695,13 +1696,29 @@ screen wasd_grid():
                     padding (0, 0)
 
                     
-                    if i == walker.player_idx:
+                    if  i in walker.closest and i == walker.player_idx:
+                        background "#F00"
                         add "her_game.png":
-                            fit "contain"    
+                            fit "contain"   
                             align (0.5, 0.5) 
                             zoom 1.1         
+                    elif  i in walker.bytS and i == walker.player_idx:
+                        background "#F00"
+                        add "her_game.png":
+                            fit "contain"   
+                            align (0.5, 0.5) 
+                            zoom 1.1
+                    elif i == walker.player_idx: 
+                        add "her_game.png":
+                            fit "contain"   
+                            align (0.5, 0.5) 
+                            zoom 1.1
+                    elif i in walker.byt:
+                        background "#F00" 
+                    elif i in walker.closest:
+                        background "#F00" 
                     elif i==walker.npc_idx:
-                        add "cerberus.png" fit "contain" align (0.5, 0.5)
+                        add "cerberus.png" fit "contain" align (0.5, 0.5) zoom 1.4
                     else:
                         null
 
