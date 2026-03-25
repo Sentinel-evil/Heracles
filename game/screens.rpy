@@ -1696,18 +1696,12 @@ screen wasd_grid():
                     padding (0, 0)
 
                     
-                    if  i in walker.closest and i == walker.player_idx:
+                    if  (i in walker.closest or i in walker.byt) and i == walker.player_idx:
                         background "#F00"
                         add "her_game.png":
                             fit "contain"   
                             align (0.5, 0.5) 
                             zoom 1.1         
-                    elif  i in walker.bytS and i == walker.player_idx:
-                        background "#F00"
-                        add "her_game.png":
-                            fit "contain"   
-                            align (0.5, 0.5) 
-                            zoom 1.1
                     elif i == walker.player_idx: 
                         add "her_game.png":
                             fit "contain"   
