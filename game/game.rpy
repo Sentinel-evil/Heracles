@@ -4,6 +4,7 @@
 
 
 init python:
+    import math
     class GridWalker:
         def __init__(self):
             # Player Stats
@@ -90,17 +91,35 @@ init python:
         def dog_attack1(self):
             px, py = self.celltoxycords(self.player_idx)
             nx, ny = self.celltoxycords(self.npc_idx)
-            att1=[self.xycordstocell(nx-1, ny),self.xycordstocell(nx-2, ny),self.xycordstocell(nx-3, ny)]
-            att2=[self.xycordstocell(nx-1, ny),self.xycordstocell(nx-2, ny-1),self.xycordstocell(nx-3, ny-2)]
-            att3=[self.xycordstocell(nx-1, ny-1),self.xycordstocell(nx-2, ny-2),self.xycordstocell(nx-3, ny-3)]
-            att4=[self.xycordstocell(nx-1, ny-1),self.xycordstocell(nx-1, ny-2),self.xycordstocell(nx-1, ny-3)]
-            att5=[self.xycordstocell(nx, ny-1),self.xycordstocell(nx, ny-2),self.xycordstocell(nx, ny-3)]
-            att6=[self.xycordstocell(nx+1, ny-1),self.xycordstocell(nx+1, ny-2),self.xycordstocell(nx+1, ny-3)]
-            att7=[self.xycordstocell(nx+1, ny-1),self.xycordstocell(nx+2, ny-2),self.xycordstocell(nx+3, ny-3)]
-            att8=[self.xycordstocell(nx+1, ny),self.xycordstocell(nx+2, ny-1),self.xycordstocell(nx+3, ny-2)]
-            att9=[self.xycordstocell(nx+1, ny),self.xycordstocell(nx+2, ny),self.xycordstocell(nx+3, ny)]
-            pool=[att1,att2,att3,att4,att5,att6,att7,att8,att9]
-            target = self.player_idx
-            self.closest = min(pool, key=lambda x: min(abs(i - target) for i in x))
-            if target in self.closest:
+            target = (px,py)
+            att1=[(nx-1, ny),(nx-2, ny),(nx-3, ny)]
+            att2=[(nx-1, ny),(nx-2, ny+1),(nx-3, ny+2)]
+            att3=[(nx-1, ny+1),(nx-2, ny+2),(nx-3, ny+3)]
+            att4=[(nx-1, ny+1),(nx-1, ny+2),(nx-1, ny+3)]
+            att5=[(nx, ny+1),(nx, ny+2),(nx, ny+3)]
+            att6=[(nx+1, ny+1),(nx+1, ny+2),(nx+1, ny+3)]
+            att7=[(nx+1, ny+1),(nx+2, ny+2),(nx+3, ny+3)]
+            att8=[(nx+1, ny),(nx+2, ny+1),(nx+3, ny+2)]
+            att9=[(nx+1, ny),(nx+2, ny),(nx+3, ny)]
+            att10=[(nx-1, ny+1),(nx-2, ny+2),(nx-2, ny+3)]
+            att11=[(nx+1, ny+1),(nx+2, ny+2),(nx+2, ny+3)]
+            att12=[(nx-1, ny),(nx-2, ny),(nx-3, ny+1)]
+            att13=[(nx+1, ny),(nx+2, ny),(nx+3, ny+1)]
+            att14=[(nx-1, ny),(nx-2, ny-1),(nx-3, ny-2)]
+            att15=[(nx-1, ny-1),(nx-2, ny-2),(nx-3, ny-3)]
+            att16=[(nx-1, ny-1),(nx-1, ny-2),(nx-1, ny-3)]
+            att17=[(nx, ny-1),(nx, ny-2),(nx, ny-3)]
+            att18=[(nx+1, ny-1),(nx+1, ny-2),(nx+1, ny-3)]
+            att19=[(nx+1, ny-1),(nx+2, ny-2),(nx+3, ny-3)]
+            att20=[(nx+1, ny),(nx+2, ny-1),(nx+3, ny-2)]
+            att21=[(nx-1, ny-1),(nx-2, ny-2),(nx-2, ny-3)]
+            att22=[(nx+1, ny-1),(nx+2, ny-2),(nx+2, ny-3)]
+            att23=[(nx-1, ny),(nx-2, ny),(nx-3, ny-1)]
+            att24=[(nx+1, ny),(nx+2, ny),(nx+3, ny-1)]
+            pool=[att1,att2,att3,att4,att5,att6,att7,att8,att9,att10,att11,att12,att13,att14,att15,att16,att17,att18,att19,att20,att21,att22,att23,att24]
+            def dist(p1, p2):
+                return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+            closestpoint = min(pool, key=lambda path: min(dist(point, target) for point in path))
+            self.closest = [int((y * self.rows) + x) for x, y in closestpoint]
+            if target in closestpoint:
                 self.take_damage(2)

@@ -10,22 +10,22 @@ init python:
             self.player_idx = 76
             self.hp = 10
             self.max_hp = 10
-            
-            # NPC Stats
+            self.closest = [-1]
+            self.byt = [-1]
             self.npc_idx = 4
             self.npc_hp = 10
             self.npc_max_hp = 10
             self.npc_alive = True
-            
+            self.rows = 9
             self.cols = 9
             
         def move(self, direction):
-            row = self.player_idx // self.cols
+            row = self.player_idx // self.rows
             col = self.player_idx % self.cols
             target = self.player_idx
 
-            if direction == "w" and row > 0: target -= self.cols
-            elif direction == "s" and row < 8: target += self.cols
+            if direction == "w" and row > 0: target -= self.rows
+            elif direction == "s" and row < 8: target += self.rows
             elif direction == "a" and col > 0: target -= 1
             elif direction == "d" and col < 8: target += 1
 
@@ -45,12 +45,12 @@ init python:
         def move_npc(self, direction):
         
 
-            row = self.npc_idx // self.cols
+            row = self.npc_idx // self.rows
             col = self.npc_idx % self.cols
             npc_target = self.npc_idx
 
-            if direction == "i" and row > 0: npc_target -= self.cols
-            elif direction == "k" and row < 8: npc_target += self.cols
+            if direction == "i" and row > 0: npc_target -= self.rows
+            elif direction == "k" and row < 8: npc_target += self.rows
             elif direction == "j" and col > 0: npc_target -= 1
             elif direction == "l" and col < 8: npc_target += 1
 
@@ -66,17 +66,80 @@ init python:
 
 
 
+        def celltoxycords(self,cell_idx):
+            return (cell_idx % self.cols, cell_idx // self.rows)
+        def xycordstocell(self,x, y):
+            return (y * self.cols + x)
+
         def attack_npc(self, damage):
             self.npc_hp -= damage
             if self.npc_hp <= 0:
                 self.npc_hp = 0
-                renpy.jump("npc_win")
+                renpy.jump("player_win")
             renpy.restart_interaction()
 
         def take_damage(self, amount):
             self.hp -= amount
             if self.hp <= 0:
                 self.hp=0
-                renpy.jump("player_win")
+                renpy.jump("npc_win")
             renpy.restart_interaction()
-#default walker = None
+
+        def space_attack(self):
+            # Вычисляем координаты игрока
+            px, py = self.celltoxycords(self.player_idx)
+            # Вычисляем координаты NPC
+            nx, ny = self.celltoxycords(self.npc_idx)
+            
+            # Проверяем расстояние: разница по X и Y не должна превышать 1
+            # (это затронет 8 клеток вокруг: по горизонтали, вертикали и диагонали)
+            if abs(px - nx) <= 1 and abs(py - ny) <= 1:
+                self.attack_npc(1)
+                
+        def dog_attack(self):
+            # Вычисляем координаты игрока
+            px, py = self.celltoxycords(self.player_idx)
+            # Вычисляем координаты NPC
+            nx, ny = self.celltoxycords(self.npc_idx)
+            self.byt=[self.xycordstocell(nx-1, ny),self.xycordstocell(nx-2, ny),self.xycordstocell(nx+1, ny),self.xycordstocell(nx+2, ny),self.xycordstocell(nx, ny-1),self.xycordstocell(nx, ny-2),self.xycordstocell(nx, ny+1),self.xycordstocell(nx, ny+2),self.xycordstocell(nx-1, ny-1),self.xycordstocell(nx-2, ny-1),self.xycordstocell(nx-1, ny-2),self.xycordstocell(nx-2, ny-2),self.xycordstocell(nx+1, ny-1),self.xycordstocell(nx+2, ny-1),self.xycordstocell(nx+1, ny-2),self.xycordstocell(nx+2, ny-2),self.xycordstocell(nx-1, ny+1),self.xycordstocell(nx-2, ny+1),self.xycordstocell(nx-1, ny+2),self.xycordstocell(nx-2, ny+2),self.xycordstocell(nx+1, ny+1),self.xycordstocell(nx+2, ny+1),self.xycordstocell(nx+1, ny+2),self.xycordstocell(nx+2, ny+2)]
+            # Проверяем расстояние: разница по X и Y не должна превышать 1
+            
+            # (это затронет 8 клеток вокруг: по горизонтали, вертикали и диагонали)
+            if abs(px - nx) <= 2 and abs(py - ny) <= 2:
+                self.take_damage(1)
+                
+        def dog_attack1(self):
+            px, py = self.celltoxycords(self.player_idx)
+            nx, ny = self.celltoxycords(self.npc_idx)
+            target = (px,py)
+            att1=[(nx-1, ny),(nx-2, ny),(nx-3, ny)]
+            att2=[(nx-1, ny),(nx-2, ny+1),(nx-3, ny+2)]
+            att3=[(nx-1, ny+1),(nx-2, ny+2),(nx-3, ny+3)]
+            att4=[(nx-1, ny+1),(nx-1, ny+2),(nx-1, ny+3)]
+            att5=[(nx, ny+1),(nx, ny+2),(nx, ny+3)]
+            att6=[(nx+1, ny+1),(nx+1, ny+2),(nx+1, ny+3)]
+            att7=[(nx+1, ny+1),(nx+2, ny+2),(nx+3, ny+3)]
+            att8=[(nx+1, ny),(nx+2, ny+1),(nx+3, ny+2)]
+            att9=[(nx+1, ny),(nx+2, ny),(nx+3, ny)]
+            att10=[(nx-1, ny+1),(nx-2, ny+2),(nx-2, ny+3)]
+            att11=[(nx+1, ny+1),(nx+2, ny+2),(nx+2, ny+3)]
+            att12=[(nx-1, ny),(nx-2, ny),(nx-3, ny+1)]
+            att13=[(nx+1, ny),(nx+2, ny),(nx+3, ny+1)]
+            att14=[(nx-1, ny),(nx-2, ny-1),(nx-3, ny-2)]
+            att15=[(nx-1, ny-1),(nx-2, ny-2),(nx-3, ny-3)]
+            att16=[(nx-1, ny-1),(nx-1, ny-2),(nx-1, ny-3)]
+            att17=[(nx, ny-1),(nx, ny-2),(nx, ny-3)]
+            att18=[(nx+1, ny-1),(nx+1, ny-2),(nx+1, ny-3)]
+            att19=[(nx+1, ny-1),(nx+2, ny-2),(nx+3, ny-3)]
+            att20=[(nx+1, ny),(nx+2, ny-1),(nx+3, ny-2)]
+            att21=[(nx-1, ny-1),(nx-2, ny-2),(nx-2, ny-3)]
+            att22=[(nx+1, ny-1),(nx+2, ny-2),(nx+2, ny-3)]
+            att23=[(nx-1, ny),(nx-2, ny),(nx-3, ny-1)]
+            att24=[(nx+1, ny),(nx+2, ny),(nx+3, ny-1)]
+            pool=[att1,att2,att3,att4,att5,att6,att7,att8,att9,att10,att11,att12,att13,att14,att15,att16,att17,att18,att19,att20,att21,att22,att23,att24]
+            def dist(p1, p2):
+                return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+            closestpoint = min(pool, key=lambda path: min(dist(point, target) for point in path))
+            self.closest = [int((y * self.rows) + x) for x, y in closestpoint]
+            if target in closestpoint:
+                self.take_damage(1)
