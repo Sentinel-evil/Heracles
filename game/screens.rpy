@@ -1759,8 +1759,8 @@ screen pvp_wasd_grid():
     key "a" action Function(walker.move, "a")
     key "d" action Function(walker.move, "d")
     key "K_SPACE" action Function(walker.space_attack)
-    key "e" action Function(walker.dog_attack)
-    key "q" action Function(walker.dog_attack1)
+    key "o" action Function(walker.dog_attack)
+    key "u" action Function(walker.dog_attack1)
     
     
 
