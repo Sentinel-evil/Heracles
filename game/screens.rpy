@@ -1719,10 +1719,10 @@ screen wasd_grid():
 
     vbox:
         align (0.05, 0.05)
-        text "Use W, A, S, D to Move" size 30 color "#AAA"
+        text "Use W, A, S, D to Move and SPACE to attack" size 30 color "#AAA"
         
     
-    textbutton "I WIN BUTTON":
+    textbutton "Exit":
         align (0.95, 0.05)
         text_size 40
         text_idle_color "#F00"
@@ -1731,15 +1731,15 @@ screen wasd_grid():
     vbox:
         align (0.05, 0.95)
         spacing 10
-        text "HP: [walker.hp]/[walker.max_hp]" size 40 color "#F00"
+        text "Heracles HP: [walker.hp]/[walker.max_hp]" size 40 color "#F00"
         
         # A simple visual health bar
-        bar value walker.hp range walker.max_hp xsize 300
+        bar value walker.hp range walker.max_hp xsize 500
         
-        text "NPC_HP: [walker.npc_hp]/[walker.npc_max_hp]" size 40 color "#F00"
+        text "Cerberus HP: [walker.npc_hp]/[walker.npc_max_hp]" size 40 color "#F00"
         
         # A simple visual health bar
-        bar value walker.npc_hp range walker.npc_max_hp xsize 300
+        bar value walker.npc_hp range walker.npc_max_hp xsize 500
 
 
 
@@ -1784,12 +1784,21 @@ screen pvp_wasd_grid():
                     padding (0, 0)
 
                     
-                    if  (i in walker.closest or i in walker.byt) and i == walker.player_idx:
-                        background "#F00"
-                        add "her_game.png":
-                            fit "contain"   
-                            align (0.5, 0.5) 
-                            zoom 1.1         
+                    if  (i in walker.closest or i in walker.byt):
+                        if i == walker.player_idx:        
+                            background "#F00"
+                            add "her_game.png":
+                                fit "contain"   
+                                align (0.5, 0.5) 
+                                zoom 1.1         
+                        elif i == walker.npc_idx:
+                            background "#F00"
+                            add "cerberus.png":
+                                fit "contain"   
+                                align (0.5, 0.5) 
+                                zoom 1.4        
+                        else:
+                            background "#F00"
                     elif i == walker.player_idx: 
                         add "her_game.png":
                             fit "contain"   
@@ -1807,10 +1816,10 @@ screen pvp_wasd_grid():
 
     vbox:
         align (0.05, 0.05)
-        text "Use W, A, S, D to Move" size 30 color "#AAA"
-        
+        text "Use W, A, S, D to Move for Heracles and SPACE to attack"size 30 color "#AAA"
+        text "Use I,J,K,L to Move Cerberus and O,U to attack" size 30 color "#AAA"
     
-    textbutton "I WIN BUTTON":
+    textbutton "Exit":
         align (0.95, 0.05)
         text_size 40
         text_idle_color "#F00"
@@ -1819,12 +1828,14 @@ screen pvp_wasd_grid():
     vbox:
         align (0.05, 0.95)
         spacing 10
-        text "HP: [walker.hp]/[walker.max_hp]" size 40 color "#F00"
+        text "Heracles HP: [walker.hp]/[walker.max_hp]" size 40 color "#F00"
         
         # A simple visual health bar
-        bar value walker.hp range walker.max_hp xsize 300
+        bar value walker.hp range walker.max_hp xsize 500
         
-        text "NPC_HP: [walker.npc_hp]/[walker.npc_max_hp]" size 40 color "#F00"
+        text "Cerberus HP: [walker.npc_hp]/[walker.npc_max_hp]" size 40 color "#F00"
         
         # A simple visual health bar
-        bar value walker.npc_hp range walker.npc_max_hp xsize 300
+        bar value walker.npc_hp range walker.npc_max_hp xsize 500
+
+
