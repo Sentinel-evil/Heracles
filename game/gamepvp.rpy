@@ -4,6 +4,10 @@
 
 
 init python:
+    import socket
+    import json
+    import threading
+    import time
     class PVPGridWalker:
         def __init__(self):
             # Player Stats
@@ -15,9 +19,28 @@ init python:
             self.npc_idx = 4
             self.npc_hp = 10
             self.npc_max_hp = 10
-            self.npc_alive = True
             self.rows = 9
             self.cols = 9
+
+        def get_state(self):
+            state = {
+                "player_idx": self.player_idx,
+                "hp": self.hp,
+                "npc_idx": self.npc_idx,
+                "npc_hp": self.npc_hp,
+            }
+            return json.dumps(state)
+
+        def apply_state(self, json_data):
+            data = json.loads(json_data)
+            self.player_idx = data["player_idx"]
+            self.hp = data["hp"]
+            self.npc_idx = data["npc_idx"]
+            self.npc_hp = data["npc_hp"]
+            self.npc_alive = data["npc_alive"]
+            renpy.restart_interaction() # Refreshes the Ren'Py screen
+
+        
             
         def move(self, direction):
             row = self.player_idx // self.rows
@@ -33,15 +56,18 @@ init python:
 
 
             # Check if moving into the NPC
-            if target == self.npc_idx and self.npc_alive:
+            if target == self.npc_idx:
                 self.attack_npc(1) # Player hits NPC
                 #self.take_damage(1)  # NPC hits back
+                #send_update(get_state(self), opponent_ip) # Send updated state to opponent
                 return # Block movement while fighting
 
             # Move if the tile is empty or NPC is dead
             if target != self.player_idx:
                 self.player_idx = target
+                send_update(self.get_state(), opponent_ip) # Send updated state to opponent
                 renpy.restart_interaction()
+            send_update(self.get_state(), opponent_ip) # Send updated state to opponent
         def move_npc(self, direction):
         
 
@@ -54,16 +80,18 @@ init python:
             elif direction == "j" and col > 0: npc_target -= 1
             elif direction == "l" and col < 8: npc_target += 1
 
-            if npc_target == self.player_idx and self.npc_alive:
+            if npc_target == self.player_idx:
                 #self.attack_npc(1) # Player hits NPC
                 self.take_damage(1)  # NPC hits back
+                #send_update(get_state(self), opponent_ip) # Send updated state to opponent
                 return # Block movement while fighting
 
             # Prevent NPC from stepping on the Player
             if npc_target != self.player_idx:
                 self.npc_idx = npc_target
+                send_update(self.get_state(), opponent_ip) # Send updated state to opponent
                 renpy.restart_interaction()
-
+            send_update(self.get_state(), opponent_ip) # Send updated state to opponent
 
 
         def celltoxycords(self,cell_idx):
@@ -76,6 +104,7 @@ init python:
             if self.npc_hp <= 0:
                 self.npc_hp = 0
                 renpy.jump("player_win")
+            send_update(self.get_state(), opponent_ip) # Send updated state to opponent
             renpy.restart_interaction()
 
         def take_damage(self, amount):
@@ -83,6 +112,7 @@ init python:
             if self.hp <= 0:
                 self.hp=0
                 renpy.jump("npc_win")
+            send_update(self.get_state(), opponent_ip) # Send updated state to opponent
             renpy.restart_interaction()
 
         def space_attack(self):
@@ -103,7 +133,7 @@ init python:
             nx, ny = self.celltoxycords(self.npc_idx)
             self.byt=[self.xycordstocell(nx-1, ny),self.xycordstocell(nx-2, ny),self.xycordstocell(nx+1, ny),self.xycordstocell(nx+2, ny),self.xycordstocell(nx, ny-1),self.xycordstocell(nx, ny-2),self.xycordstocell(nx, ny+1),self.xycordstocell(nx, ny+2),self.xycordstocell(nx-1, ny-1),self.xycordstocell(nx-2, ny-1),self.xycordstocell(nx-1, ny-2),self.xycordstocell(nx-2, ny-2),self.xycordstocell(nx+1, ny-1),self.xycordstocell(nx+2, ny-1),self.xycordstocell(nx+1, ny-2),self.xycordstocell(nx+2, ny-2),self.xycordstocell(nx-1, ny+1),self.xycordstocell(nx-2, ny+1),self.xycordstocell(nx-1, ny+2),self.xycordstocell(nx-2, ny+2),self.xycordstocell(nx+1, ny+1),self.xycordstocell(nx+2, ny+1),self.xycordstocell(nx+1, ny+2),self.xycordstocell(nx+2, ny+2)]
             # Проверяем расстояние: разница по X и Y не должна превышать 1
-            
+            #time.sleep(0.5)
             # (это затронет 8 клеток вокруг: по горизонтали, вертикали и диагонали)
             if abs(px - nx) <= 2 and abs(py - ny) <= 2:
                 self.take_damage(1)
@@ -141,5 +171,6 @@ init python:
                 return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
             closestpoint = min(pool, key=lambda path: min(dist(point, target) for point in path))
             self.closest = [int((y * self.rows) + x) for x, y in closestpoint]
+            #time.sleep(0.5)
             if target in closestpoint:
                 self.take_damage(1)

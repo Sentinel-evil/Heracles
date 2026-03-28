@@ -329,7 +329,7 @@ screen navigation():
         if main_menu:
             textbutton _("Предистория") action Start("movie")
         if main_menu:
-            textbutton _("PVP") action Start("pvp")
+            textbutton _("PVP") action Start("pvp_start")
         if renpy.variant("pc"):
 
             ## Кнопка выхода блокирована в iOS и не нужна на Android и в веб-
@@ -1672,7 +1672,7 @@ screen wasd_grid():
     key "a" action Function(walker.move, "a")
     key "d" action Function(walker.move, "d")
     key "K_SPACE" action Function(walker.space_attack)
-    key "e" action Function(walker.dog_attack)
+    key "e" action Function(walker.thr_dog_attack)
     key "q" action Function(walker.dog_attack1)
     key "K_UP" action Function(walker.move, "w")
     key "K_DOWN" action Function(walker.move, "s")
@@ -1818,6 +1818,7 @@ screen pvp_wasd_grid():
         align (0.05, 0.05)
         text "Use W, A, S, D to Move for Heracles and SPACE to attack"size 30 color "#AAA"
         text "Use I,J,K,L to Move Cerberus and O,U to attack" size 30 color "#AAA"
+        text "score: Heracles [score.score_player] - Cerberus [score.score_npc]" size 30 color "#AAA"
     
     textbutton "Exit":
         align (0.95, 0.05)

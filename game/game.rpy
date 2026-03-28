@@ -5,6 +5,8 @@
 
 init python:
     import math
+    import time
+    import threading
     class GridWalker:
         def __init__(self):
             # Player Stats
@@ -45,7 +47,12 @@ init python:
                 renpy.restart_interaction()
             
             
-            
+        def take_cords(self):
+            # Вычисляем координаты игрока
+            px, py = self.celltoxycords(self.player_idx)
+            # Вычисляем координаты NPC
+            nx, ny = self.celltoxycords(self.npc_idx)
+            return px, py, nx, ny
         def celltoxycords(self,cell_idx):
             return (cell_idx % self.cols, cell_idx // self.rows)
         def xycordstocell(self,x, y):
@@ -75,18 +82,19 @@ init python:
             # (это затронет 8 клеток вокруг: по горизонтали, вертикали и диагонали)
             if abs(px - nx) <= 1 and abs(py - ny) <= 1:
                 self.attack_npc(1)
-                
-        def dog_attack(self):
-            # Вычисляем координаты игрока
-            px, py = self.celltoxycords(self.player_idx)
-            # Вычисляем координаты NPC
-            nx, ny = self.celltoxycords(self.npc_idx)
-            self.byt=[self.xycordstocell(nx-1, ny),self.xycordstocell(nx-2, ny),self.xycordstocell(nx+1, ny),self.xycordstocell(nx+2, ny),self.xycordstocell(nx, ny-1),self.xycordstocell(nx, ny-2),self.xycordstocell(nx, ny+1),self.xycordstocell(nx, ny+2),self.xycordstocell(nx-1, ny-1),self.xycordstocell(nx-2, ny-1),self.xycordstocell(nx-1, ny-2),self.xycordstocell(nx-2, ny-2),self.xycordstocell(nx+1, ny-1),self.xycordstocell(nx+2, ny-1),self.xycordstocell(nx+1, ny-2),self.xycordstocell(nx+2, ny-2),self.xycordstocell(nx-1, ny+1),self.xycordstocell(nx-2, ny+1),self.xycordstocell(nx-1, ny+2),self.xycordstocell(nx-2, ny+2),self.xycordstocell(nx+1, ny+1),self.xycordstocell(nx+2, ny+1),self.xycordstocell(nx+1, ny+2),self.xycordstocell(nx+2, ny+2)]
-            # Проверяем расстояние: разница по X и Y не должна превышать 1
+        def thr_dog_attack(self):       
+            def dog_attack():
+                px, py, nx, ny = self.take_cords()
+                self.byt=[self.xycordstocell(nx-1, ny),self.xycordstocell(nx-2, ny),self.xycordstocell(nx+1, ny),self.xycordstocell(nx+2, ny),self.xycordstocell(nx, ny-1),self.xycordstocell(nx, ny-2),self.xycordstocell(nx, ny+1),self.xycordstocell(nx, ny+2),self.xycordstocell(nx-1, ny-1),self.xycordstocell(nx-2, ny-1),self.xycordstocell(nx-1, ny-2),self.xycordstocell(nx-2, ny-2),self.xycordstocell(nx+1, ny-1),self.xycordstocell(nx+2, ny-1),self.xycordstocell(nx+1, ny-2),self.xycordstocell(nx+2, ny-2),self.xycordstocell(nx-1, ny+1),self.xycordstocell(nx-2, ny+1),self.xycordstocell(nx-1, ny+2),self.xycordstocell(nx-2, ny+2),self.xycordstocell(nx+1, ny+1),self.xycordstocell(nx+2, ny+1),self.xycordstocell(nx+1, ny+2),self.xycordstocell(nx+2, ny+2)]
+                # Проверяем расстояние: разница по X и Y не должна превышать 1
+                time.sleep(5)
+                px, py, nx, ny =self.take_cords()
+                # (это затронет 8 клеток вокруг: по горизонтали, вертикали и диагонали)
+                if abs(px - nx) <= 2 and abs(py - ny) <= 2:
+                    self.take_damage(3)
+                self.byt = []
+            threading.Thread(target=dog_attack).start()
             
-            # (это затронет 8 клеток вокруг: по горизонтали, вертикали и диагонали)
-            if abs(px - nx) <= 2 and abs(py - ny) <= 2:
-                self.take_damage(3)
                 
         def dog_attack1(self):
             px, py = self.celltoxycords(self.player_idx)
@@ -121,5 +129,6 @@ init python:
                 return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
             closestpoint = min(pool, key=lambda path: min(dist(point, target) for point in path))
             self.closest = [int((y * self.rows) + x) for x, y in closestpoint]
+            #time.sleep(5)
             if target in closestpoint:
                 self.take_damage(2)

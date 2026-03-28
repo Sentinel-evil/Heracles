@@ -46,6 +46,7 @@ label choise1_forward:
         Cer3 "Делу время...."
         label smth0:
         $ walker = GridWalker()
+        $ score = Score()
         call screen wasd_grid
         jump smth
         #$ ttt_game = TicTacToe()
@@ -64,8 +65,12 @@ label choise1_forward:
         #        jump smth1
         label smth1:
                 "Голос" "Так он проиграл Церберу..."
-                "Голос" "И так он лежал ещё два часа..."
-                jump smth0
+                $ score.add_score("npc")
+                if score.score_npc == 9:
+                        jump smth_fail
+                else:
+                        "Голос" "И так он лежал ещё два часа..."        
+                        jump smth0
         label smth:
             
         "Голос" "Так Геракл победил Цербера и отправился дальше"
@@ -82,3 +87,9 @@ label choise1_forward:
                                 jump choise3_right
                         "Попятится в тронный зал":
                                 jump choise3_forward
+        
+
+
+
+        label smth_fail:
+                "Голос" "Так он проиграл Церберу девять раз и был вынжуден сдатся, так и не выполнив цель"
