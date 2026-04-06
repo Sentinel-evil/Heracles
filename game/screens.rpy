@@ -1667,17 +1667,17 @@ screen wasd_grid():
     add "#1a1a1a" 
 
    
-    key "w" action Function(walker.move, "w")
-    key "s" action Function(walker.move, "s")
-    key "a" action Function(walker.move, "a")
-    key "d" action Function(walker.move, "d")
+    key "w" action Function(walker.thr_move, "w")
+    key "s" action Function(walker.thr_move, "s")
+    key "a" action Function(walker.thr_move, "a")
+    key "d" action Function(walker.thr_move, "d")
     key "K_SPACE" action Function(walker.space_attack)
     key "e" action Function(walker.thr_dog_attack)
-    key "q" action Function(walker.dog_attack1)
-    key "K_UP" action Function(walker.move, "w")
-    key "K_DOWN" action Function(walker.move, "s")
-    key "K_LEFT" action Function(walker.move, "a")
-    key "K_RIGHT" action Function(walker.move, "d")
+    key "q" action Function(walker.thr_dog_attack1)
+    key "K_UP" action Function(walker.thr_move, "w")
+    key "K_DOWN" action Function(walker.thr_move, "s")
+    key "K_LEFT" action Function(walker.thr_move, "a")
+    key "K_RIGHT" action Function(walker.thr_move, "d")
 
     
     frame:
@@ -1733,12 +1733,12 @@ screen wasd_grid():
         spacing 10
         text "Heracles HP: [walker.hp]/[walker.max_hp]" size 40 color "#F00"
         
-        # A simple visual health bar
+        
         bar value walker.hp range walker.max_hp xsize 500
         
         text "Cerberus HP: [walker.npc_hp]/[walker.npc_max_hp]" size 40 color "#F00"
         
-        # A simple visual health bar
+        
         bar value walker.npc_hp range walker.npc_max_hp xsize 500
 
 
@@ -1754,20 +1754,17 @@ screen pvp_wasd_grid():
     add "#1a1a1a" 
 
    
-    key "w" action Function(walker.move, "w")
-    key "s" action Function(walker.move, "s")
-    key "a" action Function(walker.move, "a")
-    key "d" action Function(walker.move, "d")
-    key "K_SPACE" action Function(walker.space_attack)
-    key "o" action Function(walker.dog_attack)
-    key "u" action Function(walker.dog_attack1)
-    
-    
-
-    key "i" action Function(walker.move_npc, "i")
-    key "k" action Function(walker.move_npc, "k")
-    key "j" action Function(walker.move_npc, "j")
-    key "l" action Function(walker.move_npc, "l")
+    key "w" action Function(walker.thr_move, "w")
+    key "s" action Function(walker.thr_move, "s")
+    key "a" action Function(walker.thr_move, "a")
+    key "d" action Function(walker.thr_move, "d")
+    key "K_SPACE" action Function(walker.thr_space_attack)
+    key "o" action Function(walker.thr_dog_attack)
+    key "u" action Function(walker.thr_dog_attack1)
+    key "i" action Function(walker.thr_move_npc, "i")
+    key "k" action Function(walker.thr_move_npc, "k")
+    key "j" action Function(walker.thr_move_npc, "j")
+    key "l" action Function(walker.thr_move_npc, "l")
     frame:
         align (0.5, 0.5)
         padding (10, 10)
@@ -1831,12 +1828,12 @@ screen pvp_wasd_grid():
         spacing 10
         text "Heracles HP: [walker.hp]/[walker.max_hp]" size 40 color "#F00"
         
-        # A simple visual health bar
+        
         bar value walker.hp range walker.max_hp xsize 500
         
         text "Cerberus HP: [walker.npc_hp]/[walker.npc_max_hp]" size 40 color "#F00"
         
-        # A simple visual health bar
+        
         bar value walker.npc_hp range walker.npc_max_hp xsize 500
 
 
