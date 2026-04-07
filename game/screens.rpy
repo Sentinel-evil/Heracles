@@ -1666,14 +1666,15 @@ screen wasd_grid():
     modal True
     add "#1a1a1a" 
 
-   
+    on "show" action Function(walker.constant_attack)
     key "w" action Function(walker.thr_move, "w")
     key "s" action Function(walker.thr_move, "s")
     key "a" action Function(walker.thr_move, "a")
     key "d" action Function(walker.thr_move, "d")
-    key "K_SPACE" action Function(walker.space_attack)
-    key "e" action Function(walker.thr_dog_attack)
-    key "q" action Function(walker.thr_dog_attack1)
+    key "K_SPACE" action Function(walker.thr_space_attack)
+    #key "e" action Function(walker.thr_dog_attack)
+    #key "q" action Function(walker.thr_dog_attack1)
+    #key "r" action Function(walker.constant_attack)
     key "K_UP" action Function(walker.thr_move, "w")
     key "K_DOWN" action Function(walker.thr_move, "s")
     key "K_LEFT" action Function(walker.thr_move, "a")

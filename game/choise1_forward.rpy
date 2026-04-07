@@ -44,25 +44,13 @@ label choise1_forward:
         Cer1 "Гав, РРРРРР"
         Cer2 "РРРРР, Гав" 
         Cer3 "Делу время...."
+        $ score = Score()
         label smth0:
         $ walker = GridWalker()
-        $ score = Score()
-        call screen wasd_grid
-        jump smth
-        #$ ttt_game = TicTacToe()
-        #call screen tictactoe_game
+        $ walker.constant_attack() 
+        call screen wasd_grid()
+        with Pause(1)
         
-        
-        #if ttt_game.winner == "X":
-        #        jump smth
-        #elif ttt_game.winner == "O":
-                
-        #        jump smth1
-        #else:
-        #        He "Ничья?"
-        #        He "переиграем..."
-        
-        #        jump smth1
         label smth1:
                 "Голос" "Так он проиграл Церберу..."
                 $ score.add_score("npc")
@@ -93,3 +81,4 @@ label choise1_forward:
 
         label smth_fail:
                 "Голос" "Так он проиграл Церберу девять раз и был вынжуден сдатся, так и не выполнив цель"
+                return

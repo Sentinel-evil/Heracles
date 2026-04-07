@@ -134,10 +134,8 @@ init python:
                     self.take_damage(1)
                 self.byt = []
             threading.Thread(target=dog_attack).start()
-        def thr_dog_attack1(self):   
-            def dog_attack1():
+        def pool_var(self):
                 px, py, nx, ny = self.take_cords()
-                target = (px,py)
                 att1=[(nx-1, ny),(nx-2, ny),(nx-3, ny)]
                 att2=[(nx-1, ny),(nx-2, ny+1),(nx-3, ny+2)]
                 att3=[(nx-1, ny+1),(nx-2, ny+2),(nx-3, ny+3)]
@@ -162,10 +160,14 @@ init python:
                 att22=[(nx+1, ny-1),(nx+2, ny-2),(nx+2, ny-3)]
                 att23=[(nx-1, ny),(nx-2, ny),(nx-3, ny-1)]
                 att24=[(nx+1, ny),(nx+2, ny),(nx+3, ny-1)]
-                pool=[att1,att2,att3,att4,att5,att6,att7,att8,att9,att10,att11,att12,att13,att14,att15,att16,att17,att18,att19,att20,att21,att22,att23,att24]
+                self.pool=[att1,att2,att3,att4,att5,att6,att7,att8,att9,att10,att11,att12,att13,att14,att15,att16,att17,att18,att19,att20,att21,att22,att23,att24]
+        def thr_dog_attack1(self):   
+            def dog_attack1():
+                px, py, nx, ny = self.take_cords()
+                target = (px,py)
                 def dist(p1, p2):
                     return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
-                closestpoint = min(pool, key=lambda path: min(dist(point, target) for point in path))
+                closestpoint = min(self.pool, key=lambda path: min(dist(point, target) for point in path))
                 self.closest = [int((y * self.rows) + x) for x, y in closestpoint]
                 time.sleep(5)
                 px, py, nx, ny =self.take_cords()
@@ -174,3 +176,43 @@ init python:
                     self.take_damage(1)
                 self.closest = []
             threading.Thread(target=dog_attack1).start()
+        def dist(self, p1, p2):
+            return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+        def choice(self):
+            def dog_attack1():
+                px, py, nx, ny = self.take_cords()
+                target = (px,py)
+                
+                closestpoint = min(self.pool, key=lambda path: min(self.dist(point, target) for point in path))
+                self.closest = [int((y * self.rows) + x) for x, y in closestpoint]
+                time.sleep(5)
+                px, py, nx, ny =self.take_cords()
+                target = (px,py)
+                if target in closestpoint:
+                    self.take_damage(1)
+                self.closest = []
+            threading.Thread(target=dog_attack1).start()
+            def dog_attack():
+                px, py, nx, ny = self.take_cords()
+                self.byt = [
+                    self.xycordstocell(nx + dx, ny + dy)
+                    for dx in range(-2, 3)
+                    for dy in range(-2, 3)
+                    if not (dx == 0 and dy == 0)
+                    ]
+                time.sleep(0.5)
+                px, py, nx, ny =self.take_cords()
+                if abs(px - nx) <= 2 and abs(py - ny) <= 2:
+                    self.take_damage(1)
+                self.byt = []
+            
+            px, py, nx, ny = self.take_cords()
+            target = (px,py)
+            if target in self.pool: 
+                threading.Thread(target=dog_attack1).start()
+            #if target in 
+
+
+
+
+                threading.Thread(target=dog_attack).start()
