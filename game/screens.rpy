@@ -426,8 +426,8 @@ screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
 
     if main_menu:
         add gui.main_menu_background
-    else:
-        add gui.game_menu_background
+    #else:
+        #add gui.game_menu_background
 
     frame:
         style "game_menu_outer_frame"
@@ -1788,13 +1788,13 @@ screen pvp_wasd_grid():
                             add "her_game.png":
                                 fit "contain"   
                                 align (0.5, 0.5) 
-                                zoom 1.1         
+                                zoom 2         
                         elif i == walker.npc_idx:
                             background "#F00"
                             add "cerberus.png":
                                 fit "contain"   
                                 align (0.5, 0.5) 
-                                zoom 1.4        
+                                zoom 2  
                         else:
                             background "#F00"
                     elif i == walker.player_idx: 
@@ -1838,3 +1838,14 @@ screen pvp_wasd_grid():
         bar value walker.npc_hp range walker.npc_max_hp xsize 500
 
 
+screen bad_end():
+    modal True
+    add "#1a1a1a" 
+    vbox:
+        align(0.50, 0.50)
+        text "Вы проиграли!" size 30 color "#AAA"
+    textbutton "Попробовать снова":
+        align (0.5,0.55)
+        text_size 30
+        text_idle_color "#AAA"
+        action Return()

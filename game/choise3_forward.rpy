@@ -14,4 +14,5 @@ label choise3_forward:
             with Dissolve(.5)
             scene black
             "Голос" "Так он кричал ещё два часа..."
+            call screen bad_end
             return

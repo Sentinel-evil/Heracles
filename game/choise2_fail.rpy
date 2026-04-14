@@ -12,4 +12,5 @@ label choise2_fail:
         show black
         with Dissolve(.8)
         "Голос" "Так он ругался ещё 2 часа…"
+        call screen bad_end
         return

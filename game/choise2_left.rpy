@@ -19,6 +19,7 @@ label choise2_left:
         hide timcok_5
         show timcok_1
         scene трон
+        with Dissolve(.5)
         show her_happy
         show eur_base
         He "Вот тебе телефон!"
@@ -43,4 +44,5 @@ label choise2_left:
         show black
         with Dissolve(.8)
         "Голос" "И так он играл еще 2 часа..."
+        scene good_end
         return
