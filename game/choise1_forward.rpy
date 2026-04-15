@@ -81,4 +81,5 @@ label choise1_forward:
 
         label smth_fail:
                 "Голос" "Так он проиграл Церберу девять раз и был вынжуден сдатся, так и не выполнив цель"
+                show screen bad_end
                 return
